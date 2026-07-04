@@ -1,0 +1,7 @@
+Best Parameters:
+classifier__criterion: gini
+classifier__max_depth: 10
+classifier__n_estimators: 100
+imputer__strategy: median
+
+Best Recall: 0.5898

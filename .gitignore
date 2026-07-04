@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.log
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+
+# Data
+data/
+
+# Models
+models/
+reports/image/tensorboard
+
+#chat
+chat_bot/
+data_chat/
+
+

@@ -1,0 +1,7 @@
+Best Parameters:
+classifier__C: 10
+classifier__gamma: scale
+classifier__kernel: rbf
+imputer__strategy: mean
+
+Best Recall: 0.6015
