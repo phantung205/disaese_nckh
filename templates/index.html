@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}
+Diabetes Prediction
+{% endblock %}
+
+{% block css %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static',
+      filename='css/index.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<h1> mời bạn nhập vào thông số cần dự đoán</h1>
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% endif %}
+
+<div>
+    <p>Model hiện tại: {{ selected_model }}</p>
+    <label>Chọn model:</label>
+    <select id="model_select">
+        <option value="logistic"
+            {% if selected_model=="logistic" %}
+                selected
+            {% endif %}>
+            Logistic Regression
+        </option>
+        <option value="random_forest"
+            {% if selected_model=="random_forest" %}
+                selected
+            {% endif %}>
+            Random Forest
+        </option>
+        <option value="svm"
+            {% if selected_model=="svm" %}
+                selected
+            {% endif %}>
+            SVM
+        </option>
+        <option value="xgboost"
+            {% if selected_model=="xgboost" %}
+                selected
+            {% endif %}>
+            XGBoost
+        </option>
+    </select>
+</div>
+
+<form method="post" action="/predict_csv_input">
+  <div>
+       <input type="hidden" name="model_name" id="predict_model">
+  </div>
+<div>
+  <label>số lần mang thai : </label>
+  <input type="number" min="0" step="1" name="Pregnancies" value="{{ data['Pregnancies'] if data else '' }}" required>
+</div>
+<div>
+  <label>Glucose : </label>
+  <input type="number" min="1" step="0.1" name="Glucose" value="{{ data['Glucose'] if data else '' }}" required>
+</div>
+<div>
+  <label>huyết áp : </label>
+  <input type="number" min="1" step="0.1" name="BloodPressure" value="{{ data['BloodPressure'] if data else '' }}" required>
+</div>
+<div>
+  <label>độ dạy của da : </label>
+  <input type="number" min="1" step="0.1" name="SkinThickness" value="{{ data['SkinThickness'] if data else '' }}" required>
+</div>
+<div>
+  <label>Insulin : </label>
+  <input type="number" min="1" step="0.1" name="Insulin" value="{{ data['Insulin'] if data else '' }}"  required>
+</div>
+<div>
+  <label>BMI : </label>
+  <input type="number" min="1" step="0.1" name="BMI" value="{{ data['BMI'] if data else '' }}" required>
+</div>
+<div>
+  <label>Hàm Pedigree Bệnh Đái Tháo Đường : </label>
+  <input  type="number" min="0" step="0.001" name="DiabetesPedigreeFunction" value="{{ data['DiabetesPedigreeFunction'] if data else '' }}" required>
+</div>
+<div>
+  <label>Tuổi : </label>
+  <input type="number" min="1" step="1" name="Age" value="{{ data['Age'] if data else '' }}" required>
+</div>
+<div>
+  <button type="submit">dự đoán</button>
+</div>
+</form>
+
+<hr>
+{% if prediction is not none %}
+<h2>Kết quả dự đoán</h2>
+{% if prediction == 1 %}
+  <p style="color:red;">
+      Có nguy cơ mắc tiểu đường
+  </p>
+{% else %}
+  <p style="color:green;">
+      Không có dấu hiệu tiểu đường
+  </p>
+{% endif %}
+{% endif %}
+
+<hr>
+{% if proba_dict %}
+<h3>Xác suất</h3>
+<ul>
+{% for cls, prob in proba_dict.items() %}
+<li>
+  Class {{ cls }} :
+  {{ prob }} %
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<hr>
+<form method="post" action="/predict_csv_file" enctype="multipart/form-data">
+    <input type="hidden" name="model_name" id="file_model">
+    <input type="file" name="file" accept=".csv,.xlsx,.xls">
+    <button type="submit">Upload và dự đoán</button>
+    {% if output_save %}
+        <p style="color:green;">
+            Dự đoán thành công
+        </p>
+
+        <a href="/download/{{ output_save }}">
+            <button type="button">
+                Tải file kết quả
+            </button>
+        </a>
+    {% endif %}
+</form>
+
+<script>
+    function syncModel() {
+        let model = document.getElementById("model_select").value;
+        document.getElementById(
+            "predict_model"
+        ).value = model;
+
+        document.getElementById(
+            "file_model"
+        ).value = model;
+    }
+    syncModel();
+    document
+        .getElementById("model_select")
+        .addEventListener(
+            "change",
+            syncModel
+        );
+</script>
+{% endblock %}

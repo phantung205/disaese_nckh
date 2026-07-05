@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Predict Image
+{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/predict_image.css')}}">
+{% endblock %}
+
+
+{% block content %}
+  <h1>dự đoán hình ảnh bệnh võng mạc tiểu đường: </h1>
+    {% if error %}
+        <p style="color:red;">lỗi: {{error}}</p>
+    {% endif %}
+    <form action="/image" method="post" enctype="multipart/form-data">
+        <input type="file" accept=".jpg,.png,.jpeg" name="image" required>
+        <button type="submit" >dự đoán</button>
+    </form>
+
+    {% if result %}
+        <h2>kêt quả dự đoán</h2>
+        <p>
+            kết quả dự đoán :
+            <b>{{ result["class"] }}</b>
+        </p>
+        <p>
+            Độ tin cậy:
+            <b>{{ "%.2f"|format(result["confidence"]*100) }}%</b>
+        </p>
+
+        <img src="{{ url_for('predict_image.uploaded_image',filename=image_name) }}" width="300">
+
+    {% endif %}
+{% endblock %}

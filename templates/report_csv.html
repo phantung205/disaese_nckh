@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Training Reports
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/report_csv.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1>Training Reports</h1>
+
+<ul>
+    {% for filename, report in reports.items() %}
+        <h2>{{ filename }}</h2>
+        <pre>{{ report }}</pre>
+        <hr>
+    {% endfor %}
+</ul>
+
+{% endblock %}

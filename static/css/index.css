@@ -1,0 +1,34 @@
+body{
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1{
+    color: #2c3e50;
+}
+
+input,
+select{
+    width: 250px;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+button{
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.error{
+    color: red;
+}
+
+.success{
+    color: green;
+}
+
+.form-group{
+    margin-bottom: 10px;
+}
