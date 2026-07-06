@@ -2,9 +2,11 @@ from flask import Flask
 from routes.csv.csv_route import csv_bp
 from routes.csv.report_csv_route import report_csv_bp
 from routes.image.image_route import image_bp
+from routes.chat.chat_route import chat_bp
 from configs import paths_common
 import os
 from services.image.inference_service import load_model
+
 
 load_model()   # preload model
 
@@ -18,6 +20,8 @@ app.register_blueprint(csv_bp)
 app.register_blueprint(report_csv_bp)
 
 app.register_blueprint(image_bp)
+
+app.register_blueprint(chat_bp)
 
 if __name__ == '__main__':
     app.run(

@@ -14,13 +14,14 @@
     </title>
 
     <!-- css dùng chung -->
-
     <link rel="stylesheet"
           href="{{ url_for('static',
           filename='css/common.css') }}">
 
-    <!-- css riêng từng trang -->
+    <!-- css cho chat    -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/chat.css') }}">
 
+    <!-- css riêng từng trang -->
     {% block css %}
 
     {% endblock %}
@@ -51,6 +52,10 @@
 
 {% endblock %}
 
+<!-- tích hợp icon chat vào-->
+{% include "components/chat_widget.html" %}
+<!-- script cho chat-->
+<script src="{{ url_for('static',filename='js/chat.js') }}"></script>
 </body>
 
 </html>
