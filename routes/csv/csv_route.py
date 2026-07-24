@@ -13,6 +13,7 @@ def home():
         error=None,
         prediction=None,
         proba_dict=None,
+        shap_result=None,
         selected_model="logistic",
         output_save=None
     )
@@ -29,13 +30,18 @@ def predict_form():
         validation_service.validate_input(data)
 
         # dự đoán
-        prediction, proba_dict = inference_service.predict_dict(data,model_name)
+        prediction, proba_dict,shap_result = inference_service.predict_dict_shap(data,model_name)
 
-        return render_template("index.html",data=data,prediction=prediction,proba_dict=proba_dict,selected_model=model_name,error=None,output_save=None)
+        # trả về dạng dict shap
+        shap_dict = {}
+        for item in shap_result:
+            shap_dict[item["feature"]] = item
+
+        return render_template("index.html",data=data,prediction=prediction,proba_dict=proba_dict,shap_result=shap_dict,selected_model=model_name,error=None,output_save=None)
 
     except Exception as e:
         model_name = request_service.get_form_model_name(request.form)
-        return render_template("index.html",data=request.form,error=str(e),prediction=None,proba_dict=None,selected_model=model_name,output_save=None)
+        return render_template("index.html",data=request.form,error=str(e),prediction=None,proba_dict=None,shap_result=None,selected_model=model_name,output_save=None)
 
 
 @csv_bp.route("/predict_csv_file", methods=["POST"])
@@ -54,15 +60,15 @@ def predict_file():
         input_path, name, timestamp = file_service.save_upload_file(file)
 
         # dự đoán
-        df_result = inference_service.predict_file(input_path,model_name)
+        df_result = inference_service.predict_file_shap(input_path,model_name)
 
         # lưu file kết quả
         output_filename = file_service.save_prediction_result(df_result, name, timestamp)
 
-        return render_template("index.html",data=None,error=None,prediction=None,proba_dict=None,selected_model=model_name,output_save=output_filename)
+        return render_template("index.html",data=None,error=None,prediction=None,proba_dict=None,shap_result=None,selected_model=model_name,output_save=output_filename)
     except Exception  as e:
         model_name = request_service.get_form_model_name(request.form)
-        return render_template("index.html", data=None, error=str(e), prediction=None, proba_dict=None,selected_model=model_name,output_save=None)
+        return render_template("index.html", data=None, error=str(e), prediction=None, proba_dict=None,shap_result=None,selected_model=model_name,output_save=None)
 
 @csv_bp.route("/download/<filename>")
 def download_file(filename):

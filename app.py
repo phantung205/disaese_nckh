@@ -7,6 +7,11 @@ from configs import paths_common
 import os
 from services.image.inference_service import load_model
 
+# nếu muốn load luôn cả 4 model khi chạy
+# from services.csv import load_pipeline_explainer
+#
+# for model_name in ["logistic","random_forest","svm","xgboost"]:
+#     load_pipeline_explainer.get_model(model_name)
 
 load_model()   # preload model
 

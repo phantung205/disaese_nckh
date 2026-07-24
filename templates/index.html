@@ -51,43 +51,123 @@ Diabetes Prediction
 </div>
 
 <form method="post" action="/predict_csv_input">
-  <div>
+    <div>
        <input type="hidden" name="model_name" id="predict_model">
-  </div>
+    </div>
 <div>
-  <label>số lần mang thai : </label>
-  <input type="number" min="0" step="1" name="Pregnancies" value="{{ data['Pregnancies'] if data else '' }}" required>
+    <label>số lần mang thai : </label>
+    <input type="number" min="0" step="1" name="Pregnancies" value="{{ data['Pregnancies'] if data else '' }}" required>
+     {% if shap_result %}
+        <p>
+            Ảnh hưởng : {{ shap_result["Pregnancies"]["impact_percent"] }}%
+            {% if shap_result["Pregnancies"]["direction"]=="increase" %}
+                ↑ Tăng nguy cơ
+            {% else %}
+                ↓ Giảm nguy cơ
+            {% endif %}
+        </p> <br>
+    {% endif %}
 </div>
 <div>
-  <label>Glucose : </label>
-  <input type="number" min="1" step="0.1" name="Glucose" value="{{ data['Glucose'] if data else '' }}" required>
+    <label>Glucose : </label>
+    <input type="number" min="1" step="0.1" name="Glucose" value="{{ data['Glucose'] if data else '' }}" required>
+    {% if shap_result %}
+        <p>
+            Ảnh hưởng : {{ shap_result["Glucose"]["impact_percent"] }}%
+            {% if shap_result["Glucose"]["direction"]=="increase" %}
+                ↑ Tăng nguy cơ
+            {% else %}
+                ↓ Giảm nguy cơ
+            {% endif %}
+        </p> <br>
+    {% endif %}
 </div>
 <div>
-  <label>huyết áp : </label>
-  <input type="number" min="1" step="0.1" name="BloodPressure" value="{{ data['BloodPressure'] if data else '' }}" required>
+    <label>huyết áp : </label>
+    <input type="number" min="1" step="0.1" name="BloodPressure" value="{{ data['BloodPressure'] if data else '' }}" required>
+    {% if shap_result %}
+        <p>
+            Ảnh hưởng : {{ shap_result["BloodPressure"]["impact_percent"] }}%
+            {% if shap_result["BloodPressure"]["direction"]=="increase" %}
+                ↑ Tăng nguy cơ
+            {% else %}
+                ↓ Giảm nguy cơ
+            {% endif %}
+        </p> <br>
+    {% endif %}
 </div>
 <div>
-  <label>độ dạy của da : </label>
-  <input type="number" min="1" step="0.1" name="SkinThickness" value="{{ data['SkinThickness'] if data else '' }}" required>
+    <label>độ dạy của da : </label>
+    <input type="number" min="1" step="0.1" name="SkinThickness" value="{{ data['SkinThickness'] if data else '' }}" required>
+    {% if shap_result %}
+        <p>
+            Ảnh hưởng : {{ shap_result["SkinThickness"]["impact_percent"] }}%
+            {% if shap_result["SkinThickness"]["direction"]=="increase" %}
+                ↑ Tăng nguy cơ
+            {% else %}
+                ↓ Giảm nguy cơ
+            {% endif %}
+        </p> <br>
+    {% endif %}
 </div>
 <div>
-  <label>Insulin : </label>
-  <input type="number" min="1" step="0.1" name="Insulin" value="{{ data['Insulin'] if data else '' }}"  required>
+    <label>Insulin : </label>
+    <input type="number" min="1" step="0.1" name="Insulin" value="{{ data['Insulin'] if data else '' }}"  required>
+    {% if shap_result %}
+        <p>
+            Ảnh hưởng : {{ shap_result["Insulin"]["impact_percent"] }}%
+            {% if shap_result["Insulin"]["direction"]=="increase" %}
+                ↑ Tăng nguy cơ
+            {% else %}
+                ↓ Giảm nguy cơ
+            {% endif %}
+        </p> <br>
+    {% endif %}
 </div>
 <div>
-  <label>BMI : </label>
-  <input type="number" min="1" step="0.1" name="BMI" value="{{ data['BMI'] if data else '' }}" required>
+    <label>BMI : </label>
+    <input type="number" min="1" step="0.1" name="BMI" value="{{ data['BMI'] if data else '' }}" required>
+    {% if shap_result %}
+        <p>
+            Ảnh hưởng: {{ shap_result["BMI"]["impact_percent"] }}%
+            {% if shap_result["BMI"]["direction"]=="increase" %}
+                ↑ Tăng nguy cơ
+            {% else %}
+                ↓ Giảm nguy cơ
+            {% endif %}
+        </p> <br>
+    {% endif %}
 </div>
 <div>
-  <label>Hàm Pedigree Bệnh Đái Tháo Đường : </label>
-  <input  type="number" min="0" step="0.001" name="DiabetesPedigreeFunction" value="{{ data['DiabetesPedigreeFunction'] if data else '' }}" required>
+    <label>Hàm Pedigree Bệnh Đái Tháo Đường : </label>
+    <input  type="number" min="0" step="0.001" name="DiabetesPedigreeFunction" value="{{ data['DiabetesPedigreeFunction'] if data else '' }}" required>
+    {% if shap_result %}
+        <p>
+            Ảnh hưởng: {{ shap_result["DiabetesPedigreeFunction"]["impact_percent"] }}%
+            {% if shap_result["DiabetesPedigreeFunction"]["direction"]=="increase" %}
+                ↑ Tăng nguy cơ
+            {% else %}
+                ↓ Giảm nguy cơ
+            {% endif %}
+        </p> <br>
+    {% endif %}
 </div>
 <div>
-  <label>Tuổi : </label>
-  <input type="number" min="1" step="1" name="Age" value="{{ data['Age'] if data else '' }}" required>
+    <label>Tuổi : </label>
+    <input type="number" min="1" step="1" name="Age" value="{{ data['Age'] if data else '' }}" required>
+     {% if shap_result %}
+        <p>
+            Ảnh hưởng: {{ shap_result["Age"]["impact_percent"] }}%
+            {% if shap_result["Age"]["direction"]=="increase" %}
+                ↑ Tăng nguy cơ
+            {% else %}
+                ↓ Giảm nguy cơ
+            {% endif %}
+        </p> <br>
+    {% endif %}
 </div>
 <div>
-  <button type="submit">dự đoán</button>
+    <button type="submit">dự đoán</button>
 </div>
 </form>
 
@@ -95,13 +175,13 @@ Diabetes Prediction
 {% if prediction is not none %}
 <h2>Kết quả dự đoán</h2>
 {% if prediction == 1 %}
-  <p style="color:red;">
+    <p style="color:red;">
       Có nguy cơ mắc tiểu đường
-  </p>
+    </p>
 {% else %}
-  <p style="color:green;">
+    <p style="color:green;">
       Không có dấu hiệu tiểu đường
-  </p>
+    </p>
 {% endif %}
 {% endif %}
 
@@ -109,12 +189,12 @@ Diabetes Prediction
 {% if proba_dict %}
 <h3>Xác suất</h3>
 <ul>
-{% for cls, prob in proba_dict.items() %}
-<li>
-  Class {{ cls }} :
-  {{ prob }} %
-</li>
-{% endfor %}
+    {% for cls, prob in proba_dict.items() %}
+        <li>
+            Class {{ cls }} :
+            {{ prob }} %
+        </li>
+    {% endfor %}
 </ul>
 {% endif %}
 
