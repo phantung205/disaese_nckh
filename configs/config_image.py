@@ -38,3 +38,15 @@ path_best_model = os.path.join(path_model,"best_cnn.pt")
 
 
 
+"""search"""
+dir_image_search = os.path.join(paths_common.dir_data_processed,"search")
+
+name_model_search = "clip-ViT-B-32"
+batch_size_search = 256
+
+
+dir_index = os.path.join(paths_common.dir_data_processed,"indexes")
+# lưu các vector
+index_file = os.path.join(dir_index,"image_index.faiss")
+# lưu lại các id -> tên ảnh
+image_mapping_file = os.path.join(dir_index,"image_files.txt")

@@ -1,5 +1,4 @@
 from flask import Blueprint,request ,render_template,send_from_directory
-import os
 from configs import paths_common
 from services.image import inference_service,validation_service,image_service
 

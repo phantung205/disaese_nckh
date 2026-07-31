@@ -3,9 +3,11 @@ from routes.csv.csv_route import csv_bp
 from routes.csv.report_csv_route import report_csv_bp
 from routes.image.image_route import image_bp
 from routes.chat.chat_route import chat_bp
+from routes.search.search_route import search_bp
 from configs import paths_common
 import os
 from services.image.inference_service import load_model
+
 
 # nếu muốn load luôn cả 4 model khi chạy
 # from services.csv import load_pipeline_explainer
@@ -27,6 +29,8 @@ app.register_blueprint(report_csv_bp)
 app.register_blueprint(image_bp)
 
 app.register_blueprint(chat_bp)
+
+app.register_blueprint(search_bp)
 
 if __name__ == '__main__':
     app.run(
