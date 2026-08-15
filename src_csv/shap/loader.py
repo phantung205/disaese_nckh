@@ -42,9 +42,9 @@ def load_shap(model_name):
     elif model_name == "xgboost":
         explainer = shap.TreeExplainer(clf)
 
-    elif model_name == "svm":
-        background = shap.sample(x_train,50,random_state=42)
-        explainer = shap.KernelExplainer(clf.predict_proba,background)
+
+    elif model_name == "lightgbm":
+        explainer = shap.TreeExplainer(clf)
 
     else:
         raise ValueError("Model not support.")

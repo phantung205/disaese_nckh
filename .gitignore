@@ -21,6 +21,7 @@ results/
 # Models
 models/
 reports/image/tensorboard
+reports/csv/tensorboard/
 
 #chat
 chat_bot/

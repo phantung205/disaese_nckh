@@ -12,6 +12,7 @@ from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import classification_report,roc_auc_score,recall_score
 from xgboost import XGBClassifier
+from lightgbm import LGBMClassifier
 # from imblearn.over_sampling import SMOTE
 
 
@@ -20,48 +21,57 @@ def parse_args():
     # common
     p.add_argument("--random_state","-r",type=int,default=config_csv.random_state)
     p.add_argument("--test_size","-t",type=float,default=config_csv.test_size)
-    p.add_argument("--model_name","-m",type=str,default="xgboost")
+    p.add_argument("--model_name","-m",type=str,default="logistic")
 
     # RandomForest
-    p.add_argument("--n_estimators","-n",type=int,default=300)
+    p.add_argument("--n_estimators","-n",type=int,default=200)
     p.add_argument("--criterion","-rf_c",type=str,default="gini")
-    p.add_argument("--max_depth","-md",type=int,default=None)
+    p.add_argument("--max_depth","-md",type=int,default=10)
+    p.add_argument("--min_samples_split", type=int, default=2)
+    p.add_argument("--min_samples_leaf", type=int, default=1)
+    p.add_argument("--max_features", type=str, default="sqrt")
+    p.add_argument("--bootstrap", type=bool, default=True)
 
     #  Logistic
-    p.add_argument("--c_logis","-c",type=float,default=1)
+    p.add_argument("--c_logis","-c",type=float,default=0.001)
     p.add_argument("--max_iter","-i",type=int,default=500)
 
-    #  SVM
-    p.add_argument("--kernel","-k",type=str,default="linear")
-    p.add_argument("--svm_c","-sc",type=float,default=0.1)
-    p.add_argument("--gamma","-g",type=str,default="scale")
+    # LightGBM
+    p.add_argument("--lgbm_n_estimators",type=int,default=200)
+    p.add_argument("--lgbm_learning_rate",type=float,default=0.03)
+    p.add_argument("--lgbm_max_depth",type=int,default=10)
+    p.add_argument("--lgbm_num_leaves",type=int,default=31)
+
 
     #  XGBoost
-    p.add_argument("--xgb_n_estimators","-xn",type=int,default=200)
-    p.add_argument("--learning_rate","-lr",type=float,default=0.03)
-    p.add_argument("--xgb_max_depth","-xmd",type=int,default=3)
-    p.add_argument("--scale_pos_weight","-spw",type=float,default=1.5)
-
-    #  class weight (cho imbalance)
-    p.add_argument("--class_weight_0", type=float, default=1.0)
-    p.add_argument("--class_weight_1", type=float, default=1.5)
+    p.add_argument("--xgb_n_estimators","-xn",type=int,default=300)
+    p.add_argument("--xgb_learning_rate","-lr",type=float,default=0.03)
+    p.add_argument("--xgb_max_depth","-xmd",type=int,default=5)
+    p.add_argument("--xgb_subsample",type=float,default=1.0)
+    p.add_argument("--xgb_colsample_bytree",type=float,default=1.0)
+    p.add_argument("--xgb_min_child_weight",type=int,default=1)
+    p.add_argument("--xgb_gamma",type=float,default=0.1)
+    p.add_argument("--xgb_reg_alpha",type=float,default=0.1)
+    p.add_argument("--xgb_reg_lambda",type=float,default=1)
+    p.add_argument("--xgb_scale_pos_weight",type=float,default=5)
 
     return p.parse_args()
 
 def build_model(args):
 
-    class_weight = {
-        0: args.class_weight_0,
-        1: args.class_weight_1
-    }
 
     if args.model_name == "random_forest":
         clf = RandomForestClassifier(
             n_estimators=args.n_estimators,
             criterion=args.criterion,
             max_depth=args.max_depth,
+            min_samples_split=args.min_samples_split,
+            min_samples_leaf=args.min_samples_leaf,
+            max_features=args.max_features,
+            bootstrap=args.bootstrap,
+            class_weight={0:1, 1: 4.5},
             random_state=args.random_state,
-            class_weight=class_weight
+            n_jobs=-1
         )
 
     elif args.model_name == "logistic":
@@ -70,27 +80,41 @@ def build_model(args):
             penalty="l2",
             solver="lbfgs",
             max_iter=args.max_iter,
-            class_weight=class_weight
+            class_weight={0:1, 1: 5},
+            random_state=args.random_state
         )
 
-    elif args.model_name == "svm":
-        clf = SVC(
-            kernel=args.kernel,
-            C=args.svm_c,
-            gamma=args.gamma,
-            class_weight=class_weight,
-            probability=True
+
+
+    elif args.model_name == "lightgbm":
+        clf = LGBMClassifier(
+            n_estimators=args.lgbm_n_estimators,
+            learning_rate=args.lgbm_learning_rate,
+            max_depth=args.lgbm_max_depth,
+            num_leaves=args.lgbm_num_leaves,
+            class_weight=  {0:1, 1: 4.5},
+            random_state=args.random_state,
+            n_jobs=-1,
+            verbosity=-1
         )
+
 
     elif args.model_name == "xgboost":
         clf = XGBClassifier(
             n_estimators=args.xgb_n_estimators,
-            learning_rate=args.learning_rate,
+            learning_rate=args.xgb_learning_rate,
             max_depth=args.xgb_max_depth,
-            scale_pos_weight=args.scale_pos_weight,
-            random_state=args.random_state
+            subsample=args.xgb_subsample,
+            colsample_bytree=args.xgb_colsample_bytree,
+            min_child_weight=args.xgb_min_child_weight,
+            gamma=args.xgb_gamma,
+            reg_alpha=args.xgb_reg_alpha,
+            reg_lambda=args.xgb_reg_lambda,
+            scale_pos_weight=args.xgb_scale_pos_weight,
+            random_state=args.random_state,
+            eval_metric="logloss",
+            n_jobs=-1
         )
-
     else:
         raise ValueError("Model not supported")
 
@@ -109,14 +133,20 @@ def main(args):
     # x_train,y_train = smote.fit_resample(x_train,y_train)
 
     # tạo pipeline chuẩn hóa
-    num_transformer = Pipeline(steps=[
-        ("imputer",SimpleImputer(strategy="median")),
-        ("scaler",StandardScaler())
+    num_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="mean")),
+        ("scaler", StandardScaler())
+    ])
+    cat_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("onehot", OneHotEncoder(handle_unknown="ignore"))
     ])
 
     # thực hiện chuẩn hóa
-    preprocessor = ColumnTransformer(transformers=[
-        ("num_feature",num_transformer,config_csv.numerical_col)
+    preprocessor = ColumnTransformer([
+        ("num_feature", num_transformer, config_csv.numeric_features),
+        ("cat_feature", cat_transformer, config_csv.categorical_features),
+        ("binary", "passthrough", config_csv.binary_features)
     ])
 
     # tạo model pipline
@@ -131,7 +161,7 @@ def main(args):
 
     # test model
     y_proba = pipeline.predict_proba(x_test)[:, 1]
-    threshold = 0.4  # ưu tiên recall
+    threshold = 0.45  # ưu tiên recall
     y_predict = (y_proba >= threshold).astype(int)
 
     roc_auc = roc_auc_score(y_test, y_proba)

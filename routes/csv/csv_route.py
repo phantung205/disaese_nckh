@@ -1,5 +1,8 @@
 from flask import Blueprint,render_template,request,send_file
-from services.csv import validation_service, inference_service,request_service,file_service
+from services.csv import validation_service, inference_service,request_service,file_service,load_model_nn
+
+
+model,preprocessor,device = load_model_nn.load_model_nn()
 
 
 csv_bp = Blueprint("predict_csv",__name__)
@@ -29,13 +32,19 @@ def predict_form():
         # validation dữ liệu
         validation_service.validate_input(data)
 
-        # dự đoán
-        prediction, proba_dict,shap_result = inference_service.predict_dict_shap(data,model_name)
+        if model_name == "nn":
+            # dự đoán dùng neron
+            prediction, proba_dict = inference_service.predict_dict_nn(data,model,preprocessor,device)
+            shap_dict = None
 
-        # trả về dạng dict shap
-        shap_dict = {}
-        for item in shap_result:
-            shap_dict[item["feature"]] = item
+        else:
+            # dự đoán bt
+            prediction, proba_dict,shap_result = inference_service.predict_dict_shap(data,model_name)
+
+            # trả về dạng dict shap
+            shap_dict = {}
+            for item in shap_result:
+                shap_dict[item["feature"]] = item
 
         return render_template("index.html",data=data,prediction=prediction,proba_dict=proba_dict,shap_result=shap_dict,selected_model=model_name,error=None,output_save=None)
 
@@ -59,8 +68,12 @@ def predict_file():
         #lưu file người dùng upload
         input_path, name, timestamp = file_service.save_upload_file(file)
 
-        # dự đoán
-        df_result = inference_service.predict_file_shap(input_path,model_name)
+        if model_name == "nn":
+            df_result = inference_service.predict_file_nn(input_path,model,preprocessor,device)
+
+        else:
+            # dự đoán
+            df_result = inference_service.predict_file_shap(input_path,model_name)
 
         # lưu file kết quả
         output_filename = file_service.save_prediction_result(df_result, name, timestamp)

@@ -1,6 +1,7 @@
 Best Parameters:
-classifier__C: 1
+classifier__C: 0.001
+classifier__class_weight: balanced
 classifier__max_iter: 500
-imputer__strategy: mean
+classifier__penalty: l2
 
-Best Recall: 0.5564
+Best Recall: 0.8830

@@ -15,35 +15,47 @@ def  clean_raw_data(df, is_train=True):
     if is_train:
         df = df.drop_duplicates()
 
-    # sử lý các giá trị cột ko thể bằng 0
-    cols_with_zero = [
-        "Glucose",
-        "BloodPressure",
-        "SkinThickness",
-        "Insulin",
-        "BMI"
-    ]
-    exist_cols = [c for c in cols_with_zero if c in df.columns]
-    df[exist_cols] = df[exist_cols].astype("float64")
-    df[exist_cols] = df[exist_cols].replace(0, np.nan)
+    # sử lý các giá trị cột ko thể nhỏ hơn 0
+    # if "HbA1c_level" in df.columns:
+    #     df = df[df["HbA1c_level"] > 0]
+    # if "blood_glucose_level" in df.columns:
+    #     df = df[df["blood_glucose_level"] > 0]
+
+    # xóa bỏ dữ liệu ko hợp lý
+    if "smoking_history" in df.columns:
+        df = df[df['smoking_history'] != 'No Info']
 
     # xóa các cột ko cẩn thiết
-    if "..." in df.columns:
-        df = df.drop("...", axis=1)
+    # if "..." in df.columns:
+    #     df = df.drop("...", axis=1)
 
-    # 3. Lọc age không hợp lệ
+    # Lọc age không hợp lệ
     if "age" in df.columns:
-        df = df[df["age"] > 0]
+        df = df[(df["age"] >= 0) & (df["age"] <= 120)]
+
+    # xóa các giá trị ko hợp lệ
+    if "hypertension" in df.columns:
+        df = df[df["hypertension"].isin([0, 1])]
+    if "heart_disease" in df.columns:
+        df = df[df["heart_disease"].isin([0, 1])]
+
 
     # dữ lại các cột cần
     if is_train:
         required_cols = (
-            config_csv.numerical_col +
+            config_csv.numeric_features +
+            config_csv.categorical_features +
+            config_csv.binary_features +
             config_csv.target_col
         )
         df = df[required_cols]
     else :
-        df = df[config_csv.numerical_col]
+        required_cols = (
+                config_csv.numeric_features +
+                config_csv.categorical_features +
+                config_csv.binary_features
+        )
+        df = df[required_cols]
 
     return df
 

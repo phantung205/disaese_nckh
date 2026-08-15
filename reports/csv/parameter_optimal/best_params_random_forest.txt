@@ -1,7 +1,11 @@
 Best Parameters:
+classifier__bootstrap: True
+classifier__class_weight: balanced
 classifier__criterion: gini
 classifier__max_depth: 10
-classifier__n_estimators: 100
-imputer__strategy: median
+classifier__max_features: sqrt
+classifier__min_samples_leaf: 1
+classifier__min_samples_split: 2
+classifier__n_estimators: 200
 
-Best Recall: 0.5898
+Best Recall: 0.9067

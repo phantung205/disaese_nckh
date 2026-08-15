@@ -1,22 +1,32 @@
 import os
 
 def validate_input(data):
-    if data["Age"] <= 0:
+    # Numerical features
+    if data["age"] <= 0:
         raise ValueError("Tuổi phải lớn hơn 0")
-    if data["BMI"] <= 0:
+
+    if data["bmi"] <= 0:
         raise ValueError("BMI phải lớn hơn 0")
-    if data["Glucose"] <= 0:
-        raise ValueError("Glucose phải lớn hơn 0")
-    if data["Pregnancies"] < 0:
-        raise ValueError("Pregnancies phải lớn hơn 0")
-    if data["BloodPressure"] <= 0:
-        raise ValueError("BloodPressure phải lớn hơn 0")
-    if data["SkinThickness"] <= 0:
-        raise ValueError("SkinThickness phải lớn hơn 0")
-    if data["DiabetesPedigreeFunction"] < 0:
-        raise ValueError("DiabetesPedigreeFunction phải lớn hơn 0")
-    if data["Insulin"] <= 0:
-        raise ValueError("Insulin phải lớn hơn 0")
+
+    if data["HbA1c_level"] <= 0:
+        raise ValueError("HbA1c_level phải lớn hơn 0")
+
+    if data["blood_glucose_level"] <= 0:
+        raise ValueError("Blood glucose level phải lớn hơn 0")
+
+    # Binary features
+    if data["hypertension"] not in [0, 1]:
+        raise ValueError("Hypertension chỉ được phép là 0 hoặc 1")
+
+    if data["heart_disease"] not in [0, 1]:
+        raise ValueError("Heart disease chỉ được phép là 0 hoặc 1")
+
+    # Categorical features
+    if data["gender"] not in ["Male","Female","Other"]:
+        raise ValueError("Gender phải là Male, Female hoặc Other")
+
+    if data["smoking_history"] not in ["never","former","current", "not current","ever"]:
+        raise ValueError("Smoking history không hợp lệ")
 
 
 def validate_file(file):

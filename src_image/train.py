@@ -124,7 +124,7 @@ def train(args):
             "model":model.state_dict(),
             "optimizer":optimizer.state_dict()
         }
-        torch.save(checkpoint, "{}/last_cnn.pt".format(args.trained_models))
+        torch.save(checkpoint, "{}/last_nn.pt".format(args.trained_models))
         # save best model ,learning rate ,epochs
         if accuracy > best_acc:
             checkpoint = {
@@ -133,7 +133,7 @@ def train(args):
                 "model": model.state_dict(),
                 "optimizer": optimizer.state_dict()
             }
-            torch.save(checkpoint, "{}/best_cnn.pt".format(args.trained_models))
+            torch.save(checkpoint, "{}/best_nn.pt".format(args.trained_models))
             best_acc = accuracy
     writer.close()
 

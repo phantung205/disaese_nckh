@@ -7,7 +7,7 @@ from configs import config_csv
 
 def parse_args():
     p = argparse.ArgumentParser(description="test  model ")
-    p.add_argument("--model_name","-m",type=str,default="svm",help="Model name to test")
+    p.add_argument("--model_name","-m",type=str,default="lightgbm",help="Model name to test")
 
     return p.parse_args()
 

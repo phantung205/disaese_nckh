@@ -1,0 +1,7 @@
+Best Parameters:
+classifier__learning_rate: 0.03
+classifier__max_depth: 10
+classifier__n_estimators: 200
+classifier__num_leaves: 31
+
+Best Recall: 0.9163

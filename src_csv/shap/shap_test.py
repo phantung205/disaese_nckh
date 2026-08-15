@@ -2,17 +2,17 @@ from src_csv.shap.explain import explain
 from src_csv.shap.loader import load_shap
 
 sample = {
-    "Pregnancies": 6,
-    "Glucose": 148,
-    "BloodPressure": 72,
-    "SkinThickness": 35,
-    "Insulin": 0,
-    "BMI": 33.6,
-    "DiabetesPedigreeFunction": 0.627,
-    "Age": 50
+    "age": 45,
+    "bmi": 28.5,
+    "HbA1c_level": 6.2,
+    "blood_glucose_level": 145,
+    "hypertension": 1,
+    "heart_disease": 0,
+    "gender": "female",
+    "smoking_history": "never"
 }
 
-pipeline, explainer = load_shap("logistic")
+pipeline, explainer = load_shap("random_forest")
 result = explain(sample,pipeline, explainer)
 
 print("=" * 90)
@@ -37,9 +37,16 @@ for item in result:
         else "Decrease ↓"
     )
 
+    value = item["value"]
+
+    if isinstance(value, (int, float)):
+        value_str = f"{value:.2f}"
+    else:
+        value_str = str(value)
+
     print(
         f"{item['feature']:<30}"
-        f"{item['value']:>10.2f}"
+        f"{value_str:>10}"
         f"{item['shap']:>12.4f}"
         f"{item['impact_percent']:>11.2f}%"
         f"{direction:>12}"

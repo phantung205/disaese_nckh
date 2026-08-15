@@ -1,0 +1,12 @@
+Model: neron              precision    recall  f1-score   support
+
+ No Diabetes       0.98      0.93      0.96     11245
+    Diabetes       0.62      0.84      0.71      1407
+
+    accuracy                           0.92     12652
+   macro avg       0.80      0.89      0.83     12652
+weighted avg       0.94      0.92      0.93     12652
+
+ROC-AUC: 0.8886
+
+Recall: 0.8429

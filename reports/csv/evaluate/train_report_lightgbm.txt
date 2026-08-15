@@ -1,0 +1,14 @@
+Model: Lightgbm
+
+              precision    recall  f1-score   support
+
+           0       0.98      0.93      0.95     11245
+           1       0.60      0.86      0.71      1407
+
+    accuracy                           0.92     12652
+   macro avg       0.79      0.89      0.83     12652
+weighted avg       0.94      0.92      0.93     12652
+
+ROC-AUC: 0.9734
+
+Recall: 0.8579

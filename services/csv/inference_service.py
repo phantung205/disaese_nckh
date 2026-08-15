@@ -1,15 +1,24 @@
 from deploys import inference_csv,inference_shap
 from services.csv import load_pipeline_explainer
 
-def predict_dict_base(data,model_name):
-    prediction, proba = inference_csv.model_from_dic(data, model_name)
+def predict_dict_nn(data,model, preprocessor, device):
+    prediction, proba = inference_csv.nn_from_dic(data,model,preprocessor,device)
     return prediction, proba
 
-def predict_file_base(input_path,model_name):
-    df_result = inference_csv.model_from_file(input_path, model_name)
+def predict_file_nn(input_path,model, preprocessor, device):
+    df_result = inference_csv.nn_from_file(input_path,model,preprocessor,device)
 
     return df_result
 
+
+def predict_dict_base(data,model_name):
+    prediction, proba = inference_csv.model_from_dic(data,model_name)
+    return prediction, proba
+
+def predict_file_base(input_path,model_name):
+    df_result = inference_csv.model_from_file(input_path,model_name)
+
+    return df_result
 
 
 def predict_dict_shap(data, model_name):
