@@ -274,6 +274,17 @@ Diabetes Prediction
 {% endif %}
 {% endif %}
 
+{% if report_filename %}
+<hr>
+    <div>
+        <a href="/download_report/{{ report_filename }}">
+            <button type="button">
+                Tải phiếu kết quả
+            </button>
+        </a>
+    </div>
+{% endif %}
+
 <hr>
 {% if proba_dict %}
 <h3>Xác suất</h3>

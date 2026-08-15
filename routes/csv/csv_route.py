@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template,request,send_file
-from services.csv import validation_service, inference_service,request_service,file_service,load_model_nn
+from services.csv import validation_service, inference_service,request_service,file_service,load_model_nn,prediction_report_service
 
 
 model,preprocessor,device = load_model_nn.load_model_nn()
@@ -18,7 +18,8 @@ def home():
         proba_dict=None,
         shap_result=None,
         selected_model="logistic",
-        output_save=None
+        output_save=None,
+        report_filename=None
     )
 
 @csv_bp.route("/predict_csv_input", methods=["POST"])
@@ -46,11 +47,21 @@ def predict_form():
             for item in shap_result:
                 shap_dict[item["feature"]] = item
 
-        return render_template("index.html",data=data,prediction=prediction,proba_dict=proba_dict,shap_result=shap_dict,selected_model=model_name,error=None,output_save=None)
+        # Tạo phiếu kết quả PNG
+        report_filename = prediction_report_service.create_prediction_report(
+            data=data,
+            prediction=prediction,
+            proba_dict=proba_dict,
+            model_name=model_name
+        )
+
+        return render_template("index.html",data=data,prediction=prediction,proba_dict=proba_dict,shap_result=shap_dict,
+                               selected_model=model_name,error=None,output_save=None,report_filename=report_filename)
 
     except Exception as e:
         model_name = request_service.get_form_model_name(request.form)
-        return render_template("index.html",data=request.form,error=str(e),prediction=None,proba_dict=None,shap_result=None,selected_model=model_name,output_save=None)
+        return render_template("index.html",data=request.form,error=str(e),prediction=None,proba_dict=None,shap_result=None,
+                               selected_model=model_name,output_save=None,report_filename=None)
 
 
 @csv_bp.route("/predict_csv_file", methods=["POST"])
@@ -86,6 +97,15 @@ def predict_file():
 @csv_bp.route("/download/<filename>")
 def download_file(filename):
     file_path = file_service.get_download_path(filename)
+    return send_file(
+        file_path,
+        as_attachment=True
+    )
+
+@csv_bp.route("/download_report/<filename>")
+def download_report(filename):
+    file_path = prediction_report_service.get_report_path(filename)
+
     return send_file(
         file_path,
         as_attachment=True
