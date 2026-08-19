@@ -3,7 +3,7 @@ from datetime import datetime
 from PIL import Image,ImageDraw,ImageFont
 from configs import paths_common
 
-def create_prediction_report(data,prediction,proba_dict,model_name):
+def create_prediction_report(data,prediction,proba_dict,model_name,shap_result=None):
     # tạo tên file ảnh
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"prediction_{timestamp}.png"
@@ -14,7 +14,7 @@ def create_prediction_report(data,prediction,proba_dict,model_name):
 
     # tạo ảnh
     width = 1000
-    height = 1000
+    height = 1400
     image = Image.new("RGB",(width, height),"white")
     draw = ImageDraw.Draw(image)
 
@@ -85,6 +85,44 @@ def create_prediction_report(data,prediction,proba_dict,model_name):
         text = f"{label}: {prob}%"
         draw.text((100, y),text,fill="black",font=font_normal)
         y += 45
+
+    # SHAP
+    if shap_result:
+        y += 20
+        draw.line((50, y, 950, y),fill="black",width=2)
+        y += 35
+        draw.text((70, y),"GIAI THICH KET QUA (SHAP)",fill="black",font=font_header)
+        y += 55
+
+        # --------------------------------------
+        # Sắp xếp theo mức độ ảnh hưởng
+        # --------------------------------------
+        shap_items = sorted(
+            shap_result.items(),
+            key=lambda item: float(item[1].get("impact_percent", 0)),
+            reverse=True
+        )
+
+        # chỉ lấy Top 5
+        shap_items = shap_items[:5]
+
+        for feature, info in shap_items:
+            impact = info.get( "impact_percent",0)
+            direction = info.get("direction","")
+            if direction == "increase":
+                direction_text = "↑ Tang nguy co"
+            else:
+                direction_text = "↓ Giam nguy co"
+
+            text = (
+                f"{feature}: "
+                f"{impact}% "
+                f"{direction_text}"
+            )
+
+            draw.text( (100, y), text,fill="black",font=font_normal)
+
+            y += 45
 
     # model
     y += 20

@@ -17,7 +17,7 @@ def home():
         prediction=None,
         proba_dict=None,
         shap_result=None,
-        selected_model="logistic",
+        selected_model="lightgbm",
         output_save=None,
         report_filename=None
     )
@@ -52,7 +52,8 @@ def predict_form():
             data=data,
             prediction=prediction,
             proba_dict=proba_dict,
-            model_name=model_name
+            model_name=model_name,
+            shap_result=shap_dict
         )
 
         return render_template("index.html",data=data,prediction=prediction,proba_dict=proba_dict,shap_result=shap_dict,

@@ -10,11 +10,14 @@ chat_bp = Blueprint("chat", __name__)
 @chat_bp.route("/api/chat", methods=["POST"])
 def api_chat():
 
-    data = request.get_json()
+    question = request.form.get("question", "")
 
-    question = data.get("question", "")
+    image = request.files.get("image")
 
-    answer = ask(question)
+    answer = ask(
+        question=question,
+        image=image
+    )
 
     return jsonify({
         "answer": answer

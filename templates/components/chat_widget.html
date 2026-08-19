@@ -22,14 +22,29 @@
 
     </div>
 
-
     <div id="chat-input-area">
+
+        <!-- Preview ảnh đã chọn -->
+        <div id="selected-image-preview"></div>
+
+        <input
+                type="file"
+                id="chat-image"
+                accept="image/png,image/jpeg,image/webp"
+                hidden
+        >
+
+        <button id="image-btn" type="button">
+            📎
+        </button>
+
         <input
                 id="chat-input"
                 type="text"
-                placeholder="Nhập câu hỏi...">
+                placeholder="Nhập câu hỏi hoặc mô tả ảnh..."
+        >
 
-        <button id="send-btn">
+        <button id="send-btn" type="button">
             Gửi
         </button>
 
