@@ -15,6 +15,13 @@ toggle.onclick = function () {
     input.focus();
 };
 
+toggle.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle.click();
+    }
+});
+
 // ĐÓNG CHAT
 close.onclick = function () {
     container.style.display = "none";
@@ -57,7 +64,7 @@ clearBtn.onclick = function () {
 async function sendMessage() {
     const question = input.value.trim();
     const image = imageInput.files[0];
-    
+
     // Không có text và cũng không có ảnh
     if (question === "" && !image) return;
 
@@ -69,7 +76,7 @@ async function sendMessage() {
 
     messages.innerHTML += userMessage;
     messages.scrollTop = messages.scrollHeight; // Cuộn xuống cuối
-    
+
     // RESET INPUT VÀ LƯU ẢNH
     input.value = "";
     const selectedImage = image;
@@ -162,7 +169,7 @@ function showSelectedImage(image) {
     const fileSize = formatFileSize(image.size); // Lưu ý: Hàm này chưa có trong đoạn code bạn gửi
 
     selectedImagePreview.innerHTML = `<div class="selected-image"><img src="${imageUrl}" alt="Ảnh đã chọn"><div class="selected-image-info"><div class="selected-image-name">${escapeHtml(image.name)}</div><div class="selected-image-size">${fileSize}</div></div><button id="remove-image-btn" type="button" title="Hủy ảnh">✕</button></div>`;
-    
+
     selectedImagePreview.style.display = "block";
 
     // NÚT HỦY ẢNH

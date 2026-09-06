@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
 
@@ -14,8 +14,7 @@
     </title>
 
     <!-- css dùng chung -->
-    <link rel="stylesheet"
-          href="{{ url_for('static',
+    <link rel="stylesheet" href="{{ url_for('static',
           filename='css/common.css') }}">
 
     <!-- css cho chat    -->
@@ -30,35 +29,43 @@
 
 <body>
 
-<nav class="navbar">
+    <nav class="navbar" aria-label="Điều hướng chính">
 
-    <a href="{{ url_for('predict_csv.home') }}">
-        Dự đoán
-    </a>
+        <a class="brand" href="{{ url_for('predict_csv.home') }}">
+            <span class="brand-mark" aria-hidden="true">+</span>
+            <span>Diabetes Care</span>
+        </a>
 
-    <a href="{{ url_for('report_csv.show_reports') }}">
-        Báo cáo Train
-    </a>
+        <div class="nav-links">
 
-    <a href="{{ url_for('predict_image.home') }}">
-        dự đoán hình ảnh
-    </a>
-    <a href="{{ url_for('search_image.search') }}">
-        tìm kiếm hình ảnh tương tự
-    </a>
+            <a class="nav-link" href="{{ url_for('predict_csv.home') }}">
+                Dự đoán
+            </a>
 
-</nav>
+            <a class="nav-link" href="{{ url_for('report_csv.show_reports') }}">
+                Báo cáo Train
+            </a>
 
-<hr>
+            <a class="nav-link" href="{{ url_for('predict_image.home') }}">
+                dự đoán hình ảnh
+            </a>
+            <a class="nav-link" href="{{ url_for('search_image.search') }}">
+                tìm kiếm hình ảnh tương tự
+            </a>
 
-{% block content %}
+        </div>
+    </nav>
 
-{% endblock %}
+    <main class="page-shell">
+        {% block content %}
 
-<!-- tích hợp icon chat vào-->
-{% include "components/chat_widget.html" %}
-<!-- script cho chat-->
-<script src="{{ url_for('static',filename='js/chat.js') }}"></script>
+        {% endblock %}
+    </main>
+
+    <!-- tích hợp icon chat vào-->
+    {% include "components/chat_widget.html" %}
+    <!-- script cho chat-->
+    <script src="{{ url_for('static',filename='js/chat.js') }}"></script>
 </body>
 
 </html>

@@ -1,36 +1,47 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Predict Image
+Predict Image
 {% endblock %}
 
 {% block css %}
-  <link rel="stylesheet" href="{{ url_for('static',filename='css/predict_image.css')}}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/predict_image.css')}}">
 {% endblock %}
 
 
 {% block content %}
-  <h1>dự đoán hình ảnh bệnh võng mạc tiểu đường: </h1>
+<div class="image-page">
+    <header class="page-intro">
+        <p class="eyebrow">Sàng lọc võng mạc</p>
+        <h1>Phân tích hình ảnh võng mạc</h1>
+        <p>Tải lên ảnh võng mạc để mô hình hỗ trợ nhận diện dấu hiệu bệnh võng mạc tiểu đường.</p>
+    </header>
     {% if error %}
-        <p style="color:red;">lỗi: {{error}}</p>
+    <p class="alert-error">lỗi: {{error}}</p>
     {% endif %}
-    <form action="/image" method="post" enctype="multipart/form-data">
-        <input type="file" accept=".jpg,.png,.jpeg" name="image" required>
-        <button type="submit" >dự đoán</button>
-    </form>
+    <section class="image-card">
+        <form class="upload-form" action="/image" method="post" enctype="multipart/form-data">
+            <input type="file" accept=".jpg,.png,.jpeg" name="image" required>
+            <button type="submit">dự đoán</button>
+        </form>
+    </section>
 
     {% if result %}
-        <h2>kêt quả dự đoán</h2>
-        <p>
+    <section class="image-result">
+        <h2>Kết quả phân tích</h2>
+        <p class="result-line">
             kết quả dự đoán :
             <b>{{ result["class"] }}</b>
         </p>
-        <p>
+        <p class="result-line">
             Độ tin cậy:
             <b>{{ "%.2f"|format(result["confidence"]*100) }}%</b>
         </p>
 
-        <img src="{{ url_for('predict_image.uploaded_image',filename=image_name) }}" width="300">
+        <img class="diagnostic-image" src="{{ url_for('predict_image.uploaded_image',filename=image_name) }}"
+            width="300">
+    </section>
 
     {% endif %}
+</div>
 {% endblock %}

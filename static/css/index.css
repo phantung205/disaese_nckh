@@ -1,34 +1,180 @@
-body{
-    font-family: Arial, sans-serif;
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
+.prediction-page {
+    display: grid;
+    gap: 24px;
 }
 
-h1{
-    color: #2c3e50;
+.page-intro {
+    max-width: 690px;
 }
 
-input,
-select{
-    width: 250px;
-    padding: 8px;
-    margin: 5px 0;
+.eyebrow {
+    margin: 0 0 9px;
+    color: var(--teal);
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase;
 }
 
-button{
-    padding: 10px 20px;
-    cursor: pointer;
+.page-intro p {
+    max-width: 610px;
+    margin-bottom: 0;
 }
 
-.error{
-    color: red;
+.model-bar,
+.prediction-card,
+.result-card,
+.upload-card {
+    background: var(--surface);
+    border: 1px solid rgba(217, 230, 236, .9);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
 }
 
-.success{
-    color: green;
+.model-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 17px 20px;
 }
 
-.form-group{
-    margin-bottom: 10px;
+.model-bar p {
+    margin: 0;
+}
+
+.model-select {
+    width: min(100%, 280px);
+}
+
+.prediction-card {
+    padding: 24px;
+}
+
+.prediction-form {
+    display: grid;
+    gap: 18px;
+}
+
+.field-group {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(170px, 250px);
+    align-items: center;
+    gap: 18px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #edf2f4;
+}
+
+.field-group>label {
+    color: var(--ink);
+    font-weight: 650;
+}
+
+.field-group p {
+    grid-column: 1 / -1;
+    margin: -4px 0 0;
+    padding: 9px 12px;
+    color: var(--teal-dark);
+    background: var(--mint);
+    border-radius: 7px;
+    font-size: .9rem;
+}
+
+.choice-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.choice-group>label:first-child {
+    flex-basis: 100%;
+}
+
+.choice-group input[type="radio"] {
+    accent-color: var(--teal);
+}
+
+.form-actions {
+    padding-top: 3px;
+}
+
+.result-card {
+    padding: 22px 24px;
+    border-left: 4px solid var(--teal);
+}
+
+.result-card p {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    font-weight: 750;
+}
+
+.risk-high {
+    color: var(--danger) !important;
+}
+
+.risk-low {
+    color: var(--success) !important;
+}
+
+.download-block {
+    margin-top: 17px;
+}
+
+.probability-list {
+    display: grid;
+    gap: 9px;
+    padding: 0;
+    margin: 12px 0 0;
+    list-style: none;
+}
+
+.probability-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 11px 13px;
+    color: var(--muted);
+    background: #f5fafb;
+    border-radius: 7px;
+}
+
+.upload-card {
+    padding: 22px 24px;
+}
+
+.upload-card form {
+    display: grid;
+    gap: 13px;
+}
+
+.success-message {
+    color: var(--success) !important;
+    font-weight: 700;
+}
+
+@media (max-width: 650px) {
+    .model-bar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .model-select {
+        width: 100%;
+    }
+
+    .prediction-card,
+    .upload-card,
+    .result-card {
+        padding: 18px;
+    }
+
+    .field-group {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .field-group p {
+        grid-column: auto;
+    }
 }

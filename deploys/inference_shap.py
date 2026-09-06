@@ -105,16 +105,16 @@ if __name__ == "__main__":
     # =====================================
     # Test dự đoán 1 người
     # =====================================
-    sample = {
-        "Pregnancies": 6,
-        "Glucose": 148,
-        "BloodPressure": 72,
-        "SkinThickness": 35,
-        "Insulin": 0,
-        "BMI": 33.6,
-        "DiabetesPedigreeFunction": 0.627,
-        "Age": 50
-    }
+    # sample = {
+    #     "Pregnancies": 6,
+    #     "Glucose": 148,
+    #     "BloodPressure": 72,
+    #     "SkinThickness": 35,
+    #     "Insulin": 0,
+    #     "BMI": 33.6,
+    #     "DiabetesPedigreeFunction": 0.627,
+    #     "Age": 50
+    # }
 
     prediction, proba_dict, shap_result = shap_from_dic(
         sample,

@@ -1,48 +1,63 @@
 {% extends "base.html" %}
 
 {% block title %}
-    search image
+search image
 {% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/search_image.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/search_image.css') }}">
 {% endblock %}
 
 {% block content %}
-    <h1>search Image</h1>
+<div class="search-page">
+    <header class="page-intro">
+        <p class="eyebrow">Tra cứu hình ảnh</p>
+        <h1>Tìm hình ảnh tương tự</h1>
+        <p>So sánh ảnh truy vấn với kho dữ liệu để tìm các hình ảnh có đặc điểm gần nhất.</p>
+    </header>
 
     {% if error %}
-         <p style="color:red;">lỗi: {{error}}</p>
+    <p class="alert-error">lỗi: {{error}}</p>
     {% endif%}
 
-    <form action="/search" enctype="multipart/form-data" method="post">
-        <div>
-            <label>mời bạn chọn số lượng: </label>
-            <input type="number" name="top_k" step="1" min="1" max="100" value="{{ top_k if top_k else 5 }}" required>
-        </div>
-        <div>
-            <label>mời bạn chọn ảnh:</label>
-            <input type="file" name="image_search" accept=".jpg,.png,.jpeg" required>
-        </div>
-        <button type="submit" >tìm kiếm</button>
-    </form>
+    <section class="search-card">
+        <form class="search-form" action="/search" enctype="multipart/form-data" method="post">
+            <div>
+                <label>mời bạn chọn số lượng: </label>
+                <input type="number" name="top_k" step="1" min="1" max="100" value="{{ top_k if top_k else 5 }}"
+                    required>
+            </div>
+            <div>
+                <label>mời bạn chọn ảnh:</label>
+                <input type="file" name="image_search" accept=".jpg,.png,.jpeg" required>
+            </div>
+            <button type="submit">tìm kiếm</button>
+        </form>
+    </section>
 
     {% if image_results %}
-        <hr>
+    <section class="search-results">
         {% if query_image %}
+        <div class="query-image">
             <h2>Ảnh truy vấn</h2>
             <p>số lượng: {{top_k}}</p>
             <img src="{{ url_for('search_image.uploaded_image', filename=query_image) }}" width="300">
+        </div>
         {% endif %}
 
-        <h2>Result Search Image</h2>
-        {% for img in image_results %}
-            <p>{{ img }}</p>
-            <img src="{{ url_for('search_image.dataset_image', filename=img) }}" width="250">
-        {% endfor %}
+        <h2>Hình ảnh tương đồng</h2>
+        <div class="image-grid">
+            {% for img in image_results %}
+            <article class="search-result-item">
+                <p>{{ img }}</p>
+                <img src="{{ url_for('search_image.dataset_image', filename=img) }}" width="250">
+            </article>
+            {% endfor %}
+        </div>
+    </section>
     {% endif %}
 
 
 
 
-{% endblock %}
+    {% endblock %}

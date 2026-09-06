@@ -1,0 +1,34 @@
+.reports-page {
+    display: grid;
+    gap: 24px;
+}
+
+.report-list {
+    display: grid;
+    gap: 18px;
+}
+
+.report-card {
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+}
+
+.report-card h2 {
+    margin: 0;
+    padding: 17px 21px;
+    color: var(--teal-dark);
+    background: var(--mint);
+    font-size: 1rem;
+}
+
+.report-card pre {
+    overflow-x: auto;
+    margin: 0;
+    padding: 21px;
+    color: #3f5668;
+    font: .84rem/1.65 "Cascadia Code", Consolas, monospace;
+    white-space: pre-wrap;
+}

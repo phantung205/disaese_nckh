@@ -1,10 +1,10 @@
 <!-- Nút chat -->
-<div id="chat-toggle">
+<div id="chat-toggle" role="button" tabindex="0" aria-label="Mở trợ lý y khoa">
     💬
 </div>
 
 <!-- Hộp chat -->
-<div id="chat-container">
+<div id="chat-container" role="dialog" aria-label="Trợ lý y khoa">
     <div id="chat-header">
         <span>Medical ChatBot</span>
         <div>
@@ -27,22 +27,13 @@
         <!-- Preview ảnh đã chọn -->
         <div id="selected-image-preview"></div>
 
-        <input
-                type="file"
-                id="chat-image"
-                accept="image/png,image/jpeg,image/webp"
-                hidden
-        >
+        <input type="file" id="chat-image" accept="image/png,image/jpeg,image/webp" hidden>
 
         <button id="image-btn" type="button">
             📎
         </button>
 
-        <input
-                id="chat-input"
-                type="text"
-                placeholder="Nhập câu hỏi hoặc mô tả ảnh..."
-        >
+        <input id="chat-input" type="text" placeholder="Nhập câu hỏi hoặc mô tả ảnh...">
 
         <button id="send-btn" type="button">
             Gửi

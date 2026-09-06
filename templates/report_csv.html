@@ -1,22 +1,29 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Training Reports
+Training Reports
 {% endblock %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/report_csv.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/report_csv.css') }}">
 {% endblock %}
 
 {% block content %}
-<h1>Training Reports</h1>
+<div class="reports-page">
+    <header class="page-intro">
+        <p class="eyebrow">Theo dõi mô hình</p>
+        <h1>Báo cáo huấn luyện</h1>
+        <p>Các báo cáo được lưu lại để theo dõi chất lượng và quá trình huấn luyện mô hình.</p>
+    </header>
 
-<ul>
-    {% for filename, report in reports.items() %}
-        <h2>{{ filename }}</h2>
-        <pre>{{ report }}</pre>
-        <hr>
-    {% endfor %}
-</ul>
+    <div class="report-list">
+        {% for filename, report in reports.items() %}
+        <article class="report-card">
+            <h2>{{ filename }}</h2>
+            <pre>{{ report }}</pre>
+        </article>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}
